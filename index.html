@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio de Sesión - BI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: url('Fondo_Pantalla.png') no-repeat center center;
+      background-size: cover;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+
+    /* Contenedor principal */
+    #app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      position: relative;
+    }
+
+    /* ===== LOGIN ===== */
+    .login-container {
+      background: white;
+      width: 360px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      max-width: 90%;
+    }
+
+    .lock-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #9c27b0, #673ab7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .lock-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: white;
+    }
+
+    h2 {
+      color: #4caf50;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 25px;
+      background: #f1f1f1;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input:focus {
+      background: #e9e9e9;
+      box-shadow: 0 0 0 2px #bbdefb;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      justify-content: flex-start;
+    }
+
+    .remember label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #6a1b9a, #4a148c);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-login:hover {
+      background: linear-gradient(135deg, #4a148c, #311b92);
+      transform: translateY(-2px);
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .message.error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+      display: block;
+    }
+
+    /* ===== DASHBOARD ===== */
+    #dashboard {
+      display: none;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 20;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, #4a148c, #6a1b9a);
+      color: white;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+      z-index: 100;
+      transition: all 0.3s ease;
+      left: 0;
+      top: 0;
+    }
+
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+      left: -240px;
+    }
+
+    /* Tab en esquina superior izquierda */
+    .sidebar-tab {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(180deg, #4a148c, #6a1b9a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 101;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      border-bottom-right-radius: 8px;
+    }
+
+    .sidebar-tab:hover {
+      background: linear-gradient(180deg, #6a1b9a, #9c27b0);
+    }
+
+    .logo-container {
+      padding: 0 20px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .logo-container img {
+      width: 160px;
+      height: auto;
+    }
+
+    .menu-title {
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #e1bee7;
+    }
+
+    .menu-item {
+      padding: 12px 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.2s;
+      border-left: 4px solid transparent;
+      cursor: pointer;
+    }
+
+    .menu-item:hover, .menu-item.active {
+      background: rgba(255,255,255,0.15);
+      border-left: 4px solid #ffeb3b;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+      height: 100vh;
+      background: transparent;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .main-content.fullscreen {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    /* Contenedor del iframe - oculta todo lo innecesario */
+    .powerbi-container {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      overflow: hidden; /* Evita scroll adicional */
+      position: relative;
+    }
+
+    .powerbi-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      /* Escala para llenar el espacio */
+      transform: scale(1.05);
+      transform-origin: top left;
+      /* Recorte superior e inferior con clip-path */
+      clip-path: inset(0 0 0 0); /* No recorta, solo para seguridad */
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+      .main-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+      }
+      .sidebar-tab {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+      }
+      .powerbi-container iframe {
+        transform: scale(1.0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <!-- === FORMULARIO DE LOGIN === -->
+    <div id="login" class="login-container">
+      <div class="lock-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3-9H9V9h6v2z"/>
+        </svg>
+      </div>
+      <h2>Inicio de Sesión</h2>
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="username">Usuario *</label>
+          <input type="text" id="username" placeholder="Ingresa tu usuario" required />
+        </div>
+        <div class="input-group">
+          <label for="password">Contraseña *</label>
+          <input type="password" id="password" placeholder="Ingresa tu contraseña" required />
+        </div>
+        <div class="remember">
+          <div>
+            <input type="checkbox" id="remember" />
+            <label for="remember">Recordarme</label>
+          </div>
+        </div>
+        <button type="submit" class="btn-login">Ingresar</button>
+        <div id="loginMessage" class="message"></div>
+      </form>
+    </div>
+
+    <!-- === DASHBOARD (oculto al inicio) === -->
+    <div id="dashboard">
+      <div class="sidebar" id="sidebar">
+        <div class="logo-container">
+          <img src="Logo.png" alt="Logo">
+        </div>
+        <div class="menu-title">REPORTES DE BI</div>
+        <div class="menu-list">
+          <div class="menu-item active" data-url="https://app.powerbi.com/view?r=eyJrIjoiMTEwZjk5MjEtZWY5ZS00MjM3LWFhYzctNzI0MzVkYTliMWIzIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Calidad VTR</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiMjI3NDhiMTItMzc0NC00ZTMyLTg1NDEtMDAwYjRhMjgxMWRjIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Corte - Billshock</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiYTc1MjJiYmItYTQ2MS00YjhjLWFhZDktYTRlOTUxMDM2ZmVkIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">SCOT</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiYTAzYjQ4NWQtNDRmMi00NTBhLTk4MjItZjRjN2I1ZTUyYTY2IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">REDES</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiOTAzYjdhMWEtZTQ5My00ZjBmLThiOTUtNzFkMjQxMDc3ZjUwIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Spiner Operativo</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiMjc2MDY1M2EtMjdhNy00MzYxLWEzYWUtNjFlZTQwMmVkZjFkIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">VTR - Migración</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiODE3MWQyNmMtMzkzZS00NWVkLWE2N2MtOGNmNWNmNzYzNDlmIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">VTR - Reagenda</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiYzBmZDUwNTMtNzVlNC00YWFkLTk4ZTYtYWZkNDIxZWZkZjg4IiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Migracion</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiNjU5YzE3YWMtZTQ2Yi00OGNiLThjMjctODEyMGQzY2VjODFhIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Plan_Aliado</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiZmJhYWIzMTctZjFhNy00N2E5LWFmOTUtYmYzNjczMDcxZDM5IiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">VTR - Ventas</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiNTJmMzBlYjMtYTNmMS00OTYyLTljNzgtMGQwZjkxNmEyNTE1IiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Claro Cobranza operativo</div>
+          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiZWE0MDM0NmQtY2YyYi00YWZjLWIwYzUtZTNkOTc5NTk0NjQwIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Vector_Cobranza</div>
+        </div>
+      </div>
+
+      <!-- Tab en ESQUINA SUPERIOR IZQUIERDA -->
+      <div class="sidebar-tab" id="sidebarTab">☰</div>
+
+      <div class="main-content" id="mainContent">
+        <!-- No hay header aquí -->
+        <div class="powerbi-container">
+          <iframe id="powerbi-frame" src="https://app.powerbi.com/view?r=eyJrIjoiMTEwZjk5MjEtZWY5ZS00MjM3LWFhYzctNzI0MzVkYTliMWIzIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9" allowFullScreen="true"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // === LOGIN ===
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const msg = document.getElementById('loginMessage');
+
+      if (user === 'admin' && pass === 'admin') {
+        msg.textContent = 'Iniciando sesión...';
+        msg.className = 'message success';
+        setTimeout(() => {
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('dashboard').style.display = 'flex';
+        }, 800);
+      } else {
+        msg.textContent = 'Usuario o contraseña incorrectos.';
+        msg.className = 'message error';
+      }
+    });
+
+    // === TOGGLE SIDEBAR CON TAB EN ESQUINA SUPERIOR IZQUIERDA ===
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const sidebarTab = document.getElementById('sidebarTab');
+
+    sidebarTab.addEventListener('click', function() {
+      if (sidebar.classList.contains('collapsed')) {
+        sidebar.classList.remove('collapsed');
+        mainContent.classList.remove('fullscreen');
+        sidebarTab.textContent = '☰';
+      } else {
+        sidebar.classList.add('collapsed');
+        mainContent.classList.add('fullscreen');
+        sidebarTab.textContent = '☰';
+      }
+    });
+
+    // === DASHBOARD: Cambiar reporte al hacer clic ===
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+        this.classList.add('active');
+        const url = this.getAttribute('data-url');
+        const title = this.textContent;
+        document.getElementById('powerbi-frame').src = url;
+        // No cambiamos el título porque eliminamos el header
+      });
+    });
+  </script>
+
+</body>
+</html>
