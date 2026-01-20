@@ -191,7 +191,6 @@
       left: -240px;
     }
 
-    /* Tab en esquina superior izquierda */
     .sidebar-tab {
       position: fixed;
       top: 0;
@@ -226,26 +225,80 @@
       height: auto;
     }
 
-    .menu-title {
-      padding: 15px 20px;
-      font-size: 16px;
+    /* === CATEGORÍAS (ACORDEÓN) === */
+    .category-header {
+      padding: 14px 20px;
+      font-size: 15px;
       font-weight: 600;
       color: #e1bee7;
+      background: rgba(0,0,0,0.15);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .menu-item {
+    .category-header:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .category-header .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .category-header.expanded .arrow {
+      transform: rotate(90deg);
+    }
+
+    .category-items {
+      display: none;
+      padding-left: 10px;
+    }
+
+    .category.expanded .category-items {
+      display: block;
+    }
+
+    /* === ÍTEMS DE REPORTE Y BOTÓN DE CIERRE === */
+    .menu-item,
+    #logoutBtn {
       padding: 12px 20px;
       color: white;
-      text-decoration: none;
       font-size: 13px;
-      transition: all 0.2s;
-      border-left: 4px solid transparent;
       cursor: pointer;
+      border-left: 4px solid transparent;
+      transition: all 0.25s ease;
+      margin: 4px 10px;
+      border-radius: 0 8px 8px 0;
+      text-align: left;
     }
 
-    .menu-item:hover, .menu-item.active {
-      background: rgba(255,255,255,0.15);
+    .menu-item:hover,
+    #logoutBtn:hover {
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 0 8px rgba(255,255,255,0.15);
+      transform: translateX(4px);
+    }
+
+    .menu-item.active {
+      background: rgba(255,255,255,0.2);
       border-left: 4px solid #ffeb3b;
+    }
+
+    /* Estilo especial para Cerrar Sesión */
+    #logoutBtn {
+      background: rgba(183, 28, 28, 0.3); /* Rojo oscuro translúcido */
+      margin-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #ffcdd2;
+      font-weight: bold;
+    }
+
+    #logoutBtn:hover {
+      background: rgba(183, 28, 28, 0.5);
+      color: white;
     }
 
     .main-content {
@@ -262,12 +315,11 @@
       width: 100%;
     }
 
-    /* Contenedor del iframe - oculta todo lo innecesario */
     .powerbi-container {
       width: 100%;
       height: 100%;
       background: transparent;
-      overflow: hidden; /* Evita scroll adicional */
+      overflow: hidden;
       position: relative;
     }
 
@@ -276,11 +328,9 @@
       height: 100%;
       border: none;
       background: transparent;
-      /* Escala para llenar el espacio */
       transform: scale(1.05);
       transform-origin: top left;
-      /* Recorte superior e inferior con clip-path */
-      clip-path: inset(0 0 0 0); /* No recorta, solo para seguridad */
+      clip-path: inset(0 0 0 0);
     }
 
     .sidebar::-webkit-scrollbar {
@@ -341,42 +391,64 @@
       </form>
     </div>
 
-    <!-- === DASHBOARD (oculto al inicio) === -->
+    <!-- === DASHBOARD === -->
     <div id="dashboard">
       <div class="sidebar" id="sidebar">
         <div class="logo-container">
           <img src="Logo.png" alt="Logo">
         </div>
-        <div class="menu-title">REPORTES DE BI</div>
-        <div class="menu-list">
-          <div class="menu-item active" data-url="https://app.powerbi.com/view?r=eyJrIjoiMTEwZjk5MjEtZWY5ZS00MjM3LWFhYzctNzI0MzVkYTliMWIzIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Calidad VTR</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiMjI3NDhiMTItMzc0NC00ZTMyLTg1NDEtMDAwYjRhMjgxMWRjIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Corte - Billshock</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiYTc1MjJiYmItYTQ2MS00YjhjLWFhZDktYTRlOTUxMDM2ZmVkIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">SCOT</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiYTAzYjQ4NWQtNDRmMi00NTBhLTk4MjItZjRjN2I1ZTUyYTY2IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">REDES</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiOTAzYjdhMWEtZTQ5My00ZjBmLThiOTUtNzFkMjQxMDc3ZjUwIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Spiner Operativo</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiMjc2MDY1M2EtMjdhNy00MzYxLWEzYWUtNjFlZTQwMmVkZjFkIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">VTR - Migración</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiODE3MWQyNmMtMzkzZS00NWVkLWE2N2MtOGNmNWNmNzYzNDlmIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">VTR - Reagenda</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiYzBmZDUwNTMtNzVlNC00YWFkLTk4ZTYtYWZkNDIxZWZkZjg4IiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Migracion</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiNjU5YzE3YWMtZTQ2Yi00OGNiLThjMjctODEyMGQzY2VjODFhIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Plan_Aliado</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiZmJhYWIzMTctZjFhNy00N2E5LWFmOTUtYmYzNjczMDcxZDM5IiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">VTR - Ventas</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiNTJmMzBlYjMtYTNmMS00OTYyLTljNzgtMGQwZjkxNmEyNTE1IiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Claro Cobranza operativo</div>
-          <div class="menu-item" data-url="https://app.powerbi.com/view?r=eyJrIjoiZWE0MDM0NmQtY2YyYi00YWZjLWIwYzUtZTNkOTc5NTk0NjQwIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9">Vector_Cobranza</div>
+        <div class="menu-list" id="menuList">
+          <!-- Categorías y botón de cierre se generan aquí -->
         </div>
       </div>
 
-      <!-- Tab en ESQUINA SUPERIOR IZQUIERDA -->
       <div class="sidebar-tab" id="sidebarTab">☰</div>
 
       <div class="main-content" id="mainContent">
-        <!-- No hay header aquí -->
         <div class="powerbi-container">
-          <iframe id="powerbi-frame" src="https://app.powerbi.com/view?r=eyJrIjoiMTEwZjk5MjEtZWY5ZS00MjM3LWFhYzctNzI0MzVkYTliMWIzIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9" allowFullScreen="true"></iframe>
+          <iframe id="powerbi-frame" src="" allowFullScreen="true"></iframe>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    const userAccess = {
+      admin: 'all',
+      Claro_BackOffice: ['Plan Aliado'],
+      Sanitas: ['Cobranza', 'Retencion', 'Estrategia Comercial'],
+      Spinner: ['Spinner'],
+      Vtr_Cobranza: ['Cobranza ( Mes Actual)', 'Cobranza ( Mes Anterior)'],
+      Vtr_Operaciones: ['360 Migracion', 'Calidad', 'Redes', 'Reagendamiento', 'Scott']
+    };
+
+    const passwords = {
+      admin: 'admin123*',
+      Claro_BackOffice: 'ClaroBO26&',
+      Sanitas: 'Sanitas26*.',
+      Spinner: 'Spinner+*26',
+      Vtr_Cobranza: 'Cobranza&%26',
+      Vtr_Operaciones: 'Operaciones2026*+.'
+    };
+
+    const reports = [
+      { name: 'Plan Aliado', url: 'https://app.powerbi.com/view?r=eyJrIjoiMjNhZTQ1ODEtMjAwZi00NjU2LTgwNDItNTgzZWI0MzkwYzg0IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'Claro BackOffice' },
+      { name: 'Cobranza', url: 'https://app.powerbi.com/view?r=eyJrIjoiNTJjODU3MGUtNjQ5Yi00NDZmLTljZDEtZTg1ODMwMjUwMmU1IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'Sanitas' },
+      { name: 'Retencion', url: 'https://app.powerbi.com/view?r=eyJrIjoiODEzZGFmZTktMmJmYS00ODEwLWE0MDMtNjFjZTRiNjFmMzU2IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'Sanitas' },
+      { name: 'Estrategia Comercial', url: 'https://app.powerbi.com/view?r=eyJrIjoiNDkxYmI2NWYtMDY4Yi00MGNkLTljOGUtNTA5NGU2YjA1NThlIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'Sanitas' },
+      { name: 'Spinner', url: 'https://app.powerbi.com/view?r=eyJrIjoiNjAxN2UwMmMtZDQ3MC00OGZkLTliYzctYzBiYWEzYTMyZDA4IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'Spinner' },
+      { name: 'Cobranza ( Mes Actual)', url: 'https://app.powerbi.com/view?r=eyJrIjoiMjQwMDQ5OTEtM2U4MS00ODg4LTkxZWYtZWI4MTQxMjEwZTA2IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'VTR Cobranza' },
+      { name: 'Cobranza ( Mes Anterior)', url: 'https://app.powerbi.com/view?r=eyJrIjoiYmJlMWI1YTYtNDY2Ni00MGRjLTk2YzMtYWJkMjIxYjIyODJjIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'VTR Cobranza' },
+      { name: '360 Migracion', url: 'https://app.powerbi.com/view?r=eyJrIjoiNWE4NmEwYjgtNjk1OC00NTAxLThmZGUtYzk1ZjM1OTJkN2Y5IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'VTR Operaciones' },
+      { name: 'Calidad', url: 'https://app.powerbi.com/view?r=eyJrIjoiMTg5OWRhYWMtNGViYi00YTg1LTg5MDItM2EyMzU0MmM1OGE5IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'VTR Operaciones' },
+      { name: 'Redes', url: 'https://app.powerbi.com/view?r=eyJrIjoiNDY0YzVjYjktMGY3Zi00MTM3LTg1NDYtYTAyY2EyNTYzNTNmIiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'VTR Operaciones' },
+      { name: 'Reagendamiento', url: 'https://app.powerbi.com/view?r=eyJrIjoiMzE2MjhmNDctMDk3MC00Y2I5LWFmZDAtZmI1ZDczN2FmY2M4IiwidCI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'VTR Operaciones' },
+      { name: 'Scott', url: 'https://app.powerbi.com/view?r=eyJrIjoiYjUxOTRhMDctYjIxNC00YzFkLTgyNWEtN2E1OGZiZTk0ZGYwIiwidTI6ImI0MTE2ZGE0LTBlN2QtNGEyNy1hZDI5LTJiY2RiZjM2NGMzNCIsImMiOjR9', group: 'VTR Operaciones' }
+    ];
+
+    let currentUser = null;
+    let visibleReports = [];
+
     // === LOGIN ===
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -384,10 +456,20 @@
       const pass = document.getElementById('password').value.trim();
       const msg = document.getElementById('loginMessage');
 
-      if (user === 'admin' && pass === 'admin') {
+      if (passwords[user] && passwords[user] === pass) {
+        currentUser = user;
         msg.textContent = 'Iniciando sesión...';
         msg.className = 'message success';
+
+        if (userAccess[user] === 'all') {
+          visibleReports = [...reports];
+        } else {
+          const allowedNames = userAccess[user];
+          visibleReports = reports.filter(r => allowedNames.includes(r.name));
+        }
+
         setTimeout(() => {
+          renderSidebar();
           document.getElementById('login').style.display = 'none';
           document.getElementById('dashboard').style.display = 'flex';
         }, 800);
@@ -397,7 +479,79 @@
       }
     });
 
-    // === TOGGLE SIDEBAR CON TAB EN ESQUINA SUPERIOR IZQUIERDA ===
+    // === RENDER SIDEBAR + BOTÓN DE CIERRE ===
+    function renderSidebar() {
+      const menuList = document.getElementById('menuList');
+      menuList.innerHTML = '';
+
+      const groups = {};
+      visibleReports.forEach(report => {
+        if (!groups[report.group]) groups[report.group] = [];
+        groups[report.group].push(report);
+      });
+
+      for (const [group, items] of Object.entries(groups)) {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'category';
+
+        const header = document.createElement('div');
+        header.className = 'category-header';
+        header.innerHTML = `
+          <span>${group}</span>
+          <span class="arrow">▶</span>
+        `;
+
+        const itemsContainer = document.createElement('div');
+        itemsContainer.className = 'category-items';
+
+        items.forEach(item => {
+          const menuItem = document.createElement('div');
+          menuItem.className = 'menu-item';
+          menuItem.textContent = item.name;
+          menuItem.setAttribute('data-url', item.url);
+          menuItem.addEventListener('click', handleMenuClick);
+          itemsContainer.appendChild(menuItem);
+        });
+
+        header.addEventListener('click', () => {
+          categoryDiv.classList.toggle('expanded');
+        });
+
+        categoryDiv.appendChild(header);
+        categoryDiv.appendChild(itemsContainer);
+        menuList.appendChild(categoryDiv);
+      }
+
+      // === AÑADIR BOTÓN DE CERRAR SESIÓN AL FINAL ===
+      const logoutBtn = document.createElement('div');
+      logoutBtn.id = 'logoutBtn';
+      logoutBtn.textContent = 'Cerrar Sesión';
+      logoutBtn.addEventListener('click', function() {
+        document.getElementById('powerbi-frame').src = '';
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('login').style.display = 'block';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('loginMessage').textContent = '';
+        document.getElementById('loginMessage').className = 'message';
+      });
+      menuList.appendChild(logoutBtn);
+
+      // Activar primer reporte
+      const firstItem = menuList.querySelector('.menu-item');
+      if (firstItem) {
+        firstItem.classList.add('active');
+        document.getElementById('powerbi-frame').src = firstItem.getAttribute('data-url');
+      }
+    }
+
+    function handleMenuClick() {
+      document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('powerbi-frame').src = this.getAttribute('data-url');
+    }
+
+    // === TOGGLE SIDEBAR ===
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('mainContent');
     const sidebarTab = document.getElementById('sidebarTab');
@@ -406,24 +560,10 @@
       if (sidebar.classList.contains('collapsed')) {
         sidebar.classList.remove('collapsed');
         mainContent.classList.remove('fullscreen');
-        sidebarTab.textContent = '☰';
       } else {
         sidebar.classList.add('collapsed');
         mainContent.classList.add('fullscreen');
-        sidebarTab.textContent = '☰';
       }
-    });
-
-    // === DASHBOARD: Cambiar reporte al hacer clic ===
-    document.querySelectorAll('.menu-item').forEach(item => {
-      item.addEventListener('click', function() {
-        document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-        this.classList.add('active');
-        const url = this.getAttribute('data-url');
-        const title = this.textContent;
-        document.getElementById('powerbi-frame').src = url;
-        // No cambiamos el título porque eliminamos el header
-      });
     });
   </script>
 
